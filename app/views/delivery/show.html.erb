@@ -45,7 +45,10 @@
  <%@list_of_deliveries.each do |delivery|%>
  <li><div><%=delivery.description%></div>
  <div>Supposed to arrive on <%=delivery.arrive_on%></div>
- <button>Mark as received</button>
+ <form action="/modify_delivery/<%=delivery.id%>" method="post">
+          <input type="hidden" name="query_status" value="waiting">
+          <button>Mark as received</button>
+        </form>
  </li>
  <%end%>
  </ul>
@@ -53,4 +56,13 @@
 
 <div class="received" style="background-color:lightgreen">
   <h2>Received</h2>
+  <ul>
+ <%@list_of_deliveries.each do |delivery|%>
+  <%if delivery.status == "waiting"%>
+ <li><div><%=delivery.description%></div>
+ <small>Updated <%=time_ago_in_words(delivery.updated_at)%> ago <a href="/delete_delivery/<%=delivery.id%>">Delete</a></small>
+ </li>
+ <%end%>
+  <%end%>
+ </ul>
 </div>
